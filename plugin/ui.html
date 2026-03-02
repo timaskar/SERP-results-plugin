@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <style>
+    body {
+      font-family: Inter, sans-serif;
+      padding: 16px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      margin: 0;
+      box-sizing: border-box;
+    }
+
+    h3 {
+      margin: 0;
+      font-size: 14px;
+      font-weight: 600;
+    }
+
+    textarea {
+      padding: 8px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      font-size: 12px;
+      width: 100%;
+      height: 120px;
+      box-sizing: border-box;
+      font-family: monospace;
+      resize: none;
+    }
+
+    button {
+      padding: 8px 16px;
+      background-color: #18A0FB;
+      color: white;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      font-size: 12px;
+      font-weight: 500;
+    }
+
+    button:hover {
+      background-color: #0D8DE6;
+    }
+
+    .error {
+      color: #F24822;
+      font-size: 12px;
+      word-break: break-word;
+    }
+
+    .success {
+      color: #1BC47D;
+      font-size: 12px;
+    }
+
+    .hint {
+      font-size: 11px;
+      color: #666;
+    }
+  </style>
+</head>
+
+<body>
+  <h3>Yandex SERP JSON</h3>
+  <div class="hint">Paste the JSON array of parsed items here.</div>
+  <textarea id="jsonInput" placeholder='[
+  {
+    "title": "Apple",
+    "path": "https://apple.com",
+    "content": "Official site...",
+    "faviconBase64": "iVBORw0KGgo..."
+  }
+]'></textarea>
+  <button id="insertBtn">Parse & Insert</button>
+  <div id="status"></div>
+
+  <script>
+    // Helper to convert base64 to Uint8Array directly
+    function _base64ToArrayBuffer(base64) {
+      if (!base64 || typeof base64 !== 'string') return null;
+      try {
+        const binary_string = window.atob(base64);
+        const len = binary_string.length;
+        const bytes = new Uint8Array(len);
+        for (let i = 0; i < len; i++) {
+          bytes[i] = binary_string.charCodeAt(i);
+        }
+        return bytes;
+      } catch (e) {
+        return null; // Invalid base64
+      }
+    }
+
+    document.getElementById('insertBtn').onclick = () => {
+      const jsonStr = document.getElementById('jsonInput').value.trim();
+      const statusDiv = document.getElementById('status');
+      if (!jsonStr) {
+        statusDiv.textContent = "Please paste some JSON first.";
+        statusDiv.className = "error";
+        return;
+      }
+
+      try {
+        let parsedData = JSON.parse(jsonStr);
+
+        // Ensure it's an array to work with multiple selections
+        const resultsArr = Array.isArray(parsedData) ? parsedData : (parsedData.results || [parsedData]);
+
+        const results = resultsArr.map(r => {
+          return {
+            ...r,
+            faviconBytes: r.faviconBase64 ? _base64ToArrayBuffer(r.faviconBase64) : null
+          };
+        });
+
+        parent.postMessage({ pluginMessage: { type: 'fill-data', results } }, '*');
+        statusDiv.textContent = "Data sent to Figma!";
+        statusDiv.className = "success";
+      } catch (err) {
+        statusDiv.textContent = "Invalid JSON format: " + err.message;
+        statusDiv.className = "error";
+      }
+    };
+  </script>
+</body>
+
+</html>

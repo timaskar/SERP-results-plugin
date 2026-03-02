@@ -1,0 +1,18 @@
+{
+    "manifest_version": 3,
+    "name": "Yandex SERP JSON Extractor",
+    "version": "1.0",
+    "description": "Extracts Yandex search results into a JSON array and copies it to clipboard for Figma.",
+    "permissions": [
+        "activeTab",
+        "scripting"
+    ],
+    "action": {
+        "default_popup": "popup.html",
+        "default_icon": "icon.png"
+    },
+    "host_permissions": [
+        "*://ya.ru/*",
+        "*://yandex.ru/*"
+    ]
+}
