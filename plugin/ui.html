@@ -113,7 +113,7 @@
         const results = resultsArr.map(r => {
           return {
             ...r,
-            faviconBytes: r.faviconBase64 ? _base64ToArrayBuffer(r.faviconBase64) : null
+            faviconBase64: r.faviconBase64 || null
           };
         });
 

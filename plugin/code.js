@@ -98,12 +98,10 @@ figma.ui.onmessage = async (msg) => {
             }
 
             // 4. Favicon
-            if (data.faviconBytes) {
+            if (data.faviconBase64) {
                 try {
-                    const bytesArray = data.faviconBytes instanceof Uint8Array
-                        ? data.faviconBytes
-                        : new Uint8Array(Object.values(data.faviconBytes));
-
+                    // Use native Figma base64 decoding for reliability instead of IPC transfer of Uint8Array
+                    const bytesArray = figma.base64Decode(data.faviconBase64);
                     const image = figma.createImage(bytesArray);
 
                     let replacedImage = false;
@@ -141,26 +139,27 @@ figma.ui.onmessage = async (msg) => {
                                     }
                                 }
                             } catch (e) {
-                                console.log("Failed to swap variant:", e);
+                                figma.notify("Notice: Could not swap favicon variant (safe to ignore).");
                             }
                         }
 
                         // We now directly target the wrapper itself (e.g. "Source / Icon / Favicon")
                         try {
                             if ('fills' in wrapper) {
-                                // Important: We MUST clone the fills before modifying if we want to ensure Figma sees it
-                                // But usually directly assigning a new array works for overrides
+                                // Explicitly clone to avoid "read-only" issues in some locked components
+                                const newFills = Array.isArray(wrapper.fills) ? [...wrapper.fills] : [];
+                                // We replace the fills array entirely for the instance
                                 wrapper.fills = [{
                                     type: 'IMAGE',
                                     scaleMode: 'FILL',
                                     imageHash: image.hash
                                 }];
                                 replacedImage = true;
-                                console.log(`Successfully replaced image fill on wrapper: "${wrapper.name}"`);
+                                console.log(`Successfully replaced image fill on "${wrapper.name}"`);
                                 break; // Stop after first successful replacement
                             }
                         } catch (e) {
-                            console.log("Failed to swap fills:", e);
+                            figma.notify(`Error applying fill to ${wrapper.name}: ` + e.message);
                         }
                     }
 
