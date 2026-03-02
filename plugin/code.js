@@ -113,28 +113,31 @@ figma.ui.onmessage = async (msg) => {
                         const wrapper = faviconWrappers[j];
 
                         // Attempt to swap component to "placeholder" variant if it's a variant set
-                        if (wrapper.type === 'INSTANCE' && wrapper.mainComponent) {
+                        if (wrapper.type === 'INSTANCE') {
                             try {
-                                const parent = wrapper.mainComponent.parent;
-                                if (parent && parent.type === 'COMPONENT_SET') {
-                                    const placeholderVariant = parent.children.find(c => c.name.toLowerCase().includes('placeholder'));
+                                const mainComp = await wrapper.getMainComponentAsync();
+                                if (mainComp) {
+                                    const parent = mainComp.parent;
+                                    if (parent && parent.type === 'COMPONENT_SET') {
+                                        const placeholderVariant = parent.children.find(c => c.name.toLowerCase().includes('placeholder'));
 
-                                    if (placeholderVariant) {
-                                        const variantNameParts = placeholderVariant.name.split(',');
-                                        const propsToSet = {};
+                                        if (placeholderVariant) {
+                                            const variantNameParts = placeholderVariant.name.split(',');
+                                            const propsToSet = {};
 
-                                        for (const part of variantNameParts) {
-                                            const [propName, propValue] = part.split('=');
-                                            if (propName && propValue) {
-                                                propsToSet[propName.trim()] = propValue.trim();
+                                            for (const part of variantNameParts) {
+                                                const [propName, propValue] = part.split('=');
+                                                if (propName && propValue) {
+                                                    propsToSet[propName.trim()] = propValue.trim();
+                                                }
                                             }
-                                        }
 
-                                        if (Object.keys(propsToSet).length > 0) {
-                                            try { wrapper.setProperties(propsToSet); }
-                                            catch (e) { wrapper.swapComponent(placeholderVariant); }
-                                        } else {
-                                            wrapper.swapComponent(placeholderVariant);
+                                            if (Object.keys(propsToSet).length > 0) {
+                                                try { wrapper.setProperties(propsToSet); }
+                                                catch (e) { wrapper.swapComponent(placeholderVariant); }
+                                            } else {
+                                                wrapper.swapComponent(placeholderVariant);
+                                            }
                                         }
                                     }
                                 }
