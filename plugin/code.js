@@ -173,6 +173,7 @@ figma.ui.onmessage = async (msg) => {
                                     scaleMode: 'FILL',
                                     imageHash: image.hash
                                 }];
+                                replacedImage = true;
                             } else {
                                 const fbImgNode = node.findOne ? node.findOne(n => n.name.toLowerCase() === 'image') : null;
                                 if (fbImgNode && 'fills' in fbImgNode) {
@@ -181,16 +182,17 @@ figma.ui.onmessage = async (msg) => {
                                         scaleMode: 'FILL',
                                         imageHash: image.hash
                                     }];
+                                    replacedImage = true;
                                 } else {
-                                    console.error("Could not find a fillable layer for favicon");
+                                    figma.notify("Could not find a fillable 'favicon' or 'image' layer in the component.");
                                 }
                             }
                         } catch (e) {
-                            console.error("Complete fallback failed:", e);
+                            figma.notify("Complete fallback failed: " + e.message);
                         }
                     }
                 } catch (e) {
-                    console.error("Failed to set favicon image:", e);
+                    figma.notify("Failed to decode or set favicon image: " + e.message);
                 }
             }
             filledCount++;
