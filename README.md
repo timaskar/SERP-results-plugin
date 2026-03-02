@@ -1,7 +1,7 @@
 # 🔎 SERP Results Fetcher & Figma Plugin
 
 [![Figma](https://img.shields.io/badge/Figma-F24E1E?style=for-the-badge&logo=figma&logoColor=white)](https://www.figma.com/community/plugin/1610337893974627736)
-[![Chrome Extension](https://img.shields.io/badge/Chrome_Extension-4285F4?style=for-the-badge&logo=google-chrome&logoColor=white)](#)
+[![Chrome Extension](https://img.shields.io/badge/Chrome_Extension-4285F4?style=for-the-badge&logo=google-chrome&logoColor=white)](https://github.com/timaskar/SERP-results-plugin/tree/main/browser-extension)
 
 Позволяет мгновенно извлекать реальные результаты поисковой выдачи (SERP) прямо из браузера и в один клик переносить эти данные в ваши макеты Figma. Больше никакого lorem ipsum и фейковых данных!
 
