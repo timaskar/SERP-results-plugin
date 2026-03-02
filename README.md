@@ -3,55 +3,54 @@
 [![Figma](https://img.shields.io/badge/Figma-F24E1E?style=for-the-badge&logo=figma&logoColor=white)](https://www.figma.com/)
 [![Chrome Extension](https://img.shields.io/badge/Chrome_Extension-4285F4?style=for-the-badge&logo=google-chrome&logoColor=white)](#)
 
-A powerful toolset for UX/UI designers and SEO specialists. Extract real search engine results pages (SERP) directly from your browser and populate your Figma mockups with a single click. No more lorem ipsum or dummy data!
+Мощный набор инструментов для UX/UI-дизайнеров и SEO-специалистов. Позволяет мгновенно извлекать реальные результаты поисковой выдачи (SERP) прямо из браузера и в один клик переносить эти данные в ваши макеты Figma. Больше никакого lorem ipsum и фейковых данных!
 
 ![Demo GIF](assets/demo.gif)
 
-## ✨ Features
+## ✨ Возможности
 
-- **🚀 One-Click Browser Extraction:** Instantly extract titles, URLs, descriptions, and favicons from real Yandex/Google search results.
-- **🖼️ Real Favicon Support:** Automatically downloads and converts website favicons into high-quality Base64 images for Figma.
-- **🎨 Smart Figma Population:** Fills up your connected Figma "Snippet" components dynamically without detaching components.
-- **🧠 Intelligent Overrides:** Detects inner layers and deeply nested elements to gracefully replace placeholder content and images.
-
----
-
-## 📦 What's Inside?
-
-The project is split into three main parts:
-1. `browser-extension/`: A Chrome/Yandex browser extension to scrape organic search results and copy them as JSON.
-2. `plugin/`: The Figma plugin that reads the JSON payload and populates the selected layers.
-3. `backend/`: (Optional) Python backend server for advanced SERP scraping.
+- **🚀 Извлечение в один клик:** Моментально собирает заголовки, ссылки, описания и фавиконки из реальной выдачи Яндекса или Google.
+- **🖼️ Поддержка реальных фавиконок:** Плагин автоматически скачивает фавиконки сайтов и конвертирует их в высококачественные картинки (Base64) для Figma.
+- **🎨 Умное заполнение Figma-компонентов:** Динамически подставляет текст и картинки в ваши компоненты-«сниппеты» без их отсоединения (detach) от мастера.
+- **🧠 Продвинутые перезаписи (Overrides):** Умеет «проваливаться» в глубоко вложенные слои и варианты (например, автоматически переключать иконку в режим `placeholder`), чтобы мягко заменять контент.
 
 ---
 
-## 🛠️ Installation & Setup
+## 📦 Из чего состоит проект?
 
-### 1. Browser Extension (Chrome / Yandex)
-1. Open your browser and navigate to `chrome://extensions/`.
-2. Enable **Developer mode** in the top right corner.
-3. Click on **Load unpacked** and select the `browser-extension` folder from this repository.
-4. Pin the extension to your toolbar.
-
-### 2. Figma Plugin
-1. Open Figma and open a design file.
-2. Go to `Plugins` > `Development` > `Import plugin from manifest...`
-3. Select the `manifest.json` file located inside the `plugin/` folder of this repository.
+Проект разделен на три части:
+1. `browser-extension/`: Расширение для Chrome / Яндекс Браузера, которое считывает поисковую выдачу и копирует ее в буфер обмена в виде JSON.
+2. `plugin/`: Плагин для Figma, который читает этот JSON из буфера и автоматически заполняет выделенные на холсте компоненты.
+3. `backend/`: (Опционально) Python-бэкенд для продвинутого сбора поисковой выдачи.
 
 ---
 
-## 💡 How to Use
+## 🛠️ Установка и Настройка
 
-1. **Extract Data:** Go to a search engine (e.g., `ya.ru`), search for your query, and click the `Extract` button in your SERP Results browser extension. The organic search data will be copied to your clipboard as JSON.
-2. **Setup Figma Snippets:** Ensure you have your Figma snippet instances selected on your canvas.
-3. **Run the Plugin:** Open the SERP Results Plugin in Figma.
-4. **Paste & Populate:** Paste the copied JSON into the text area of the plugin and click **Parse & Insert**. Watch your mockups magically fill with real data!
+### 1. Браузерное расширение
+1. Откройте ваш браузер и перейдите по адресу `chrome://extensions/` или `browser://extensions/`.
+2. Включите **Режим разработчика (Developer mode)** в правом верхнем углу.
+3. Нажмите **Загрузить распакованное расширение (Load unpacked)** и выберите папку `browser-extension` из этого репозитория.
+4. Закрепите расширение на панели задач.
+
+### 2. Figma Плагин
+1. Откройте Figma и перейдите в ваш рабочий файл.
+2. В верхнем меню выберите `Plugins` > `Development` > `Import plugin from manifest...`
+3. Укажите путь к файлу `manifest.json`, который лежит в папке `plugin/`.
 
 ---
 
-## 🤝 Contributing
+## 💡 Как этим пользоваться
 
-Feel free to fork this project, submit pull requests, or send suggestions. If you find a bug regarding Yandex's ever-changing CSS selectors, raise an issue!
+1. **Соберите данные:** Зайдите в поисковую систему (например, `ya.ru`), введите запрос и нажмите на синюю кнопку `Extract` в панели расширения браузера. Реальные данные поиска автоматически скопируются в буфер обмена (JSON).
+2. **Подготовьте компоненты в Figma:** Выделите на холсте один или несколько инстансов ваших компонентов (например, карточки «Органическая выдача»).
+3. **Запустите Плагин:** Откройте плагин Yandex SERP Placer в Figma.
+4. **Заполнение:** Вставьте скопированный JSON в большое текстовое поле плагина и нажмите **Parse & Insert**. Смотрите, как макеты мгновенно наполняются реальным контентом и фавиконками!
 
-## 📄 License
-MIT License. Created with ❤️ for the design community.
+---
+
+## 🤝 Вклад в разработку
+Яндекс любит менять CSS-классы и структуру выдачи 😅 Если расширение перестало вытягивать нужные данные — не стесняйтесь открывать Issues или кидать Pull Requests!
+
+## 📄 Лицензия
+MIT License. Создано с ❤️ для дизайн-сообщества.
